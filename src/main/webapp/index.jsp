@@ -4,6 +4,7 @@
 
 <%@ page import="java.util.ArrayList,edu.uptc.model.SucursalManager"%>
 <%@ page import="edu.uptc.model.Plato"%>
+<%@ page import="edu.uptc.model.Sucursal"%>
 
 <!DOCTYPE html>
 <html>
@@ -26,15 +27,31 @@
 			<option value="Tarjeta Debito">Tarjeta Debito</option>
 			<option value="Efectivo">Efectivo</option>
 		</select>
+		
+		<c:set var="sManager" value="${SucursalManager()}"/>
+		<c:set var="listSucursales" value="${sManager.getListSucursales()}"/>
+		
+		<select id="select" name="ciudad" class="form-select"  aria-label="Default select example">
+			<option selected>Seleccione la Sucursal</option>
+			<c:forEach items="${listSucursales}" var="i">
+				<option value="<c:out value="${i.idSucursal}"/>" >
+				 	<c:out value="${i.idSucursal}"/> - <c:out value="${i.ciudad}"/> - <c:out value="${i.direccion}"></c:out> 
+				 </option>
+			</c:forEach>
+		</select>
 
 		<c:forEach items="${listPlatos}" var="i">
-
+			
 			<div class="form-check">
-				<input name="${i.idPlato} class="form-check-input" type="checkbox" value="${i.idPlato}"
+				<label class="form-check-label"
+					for="flexCheckDefault"> ${i.idPlato} </label>
+				<input name="${i.idPlato}" class="form-check-input" type="number" min="1" step="1" value=""
 					id="flexCheckDefault"> <label class="form-check-label"
 					for="flexCheckDefault"> ${i.nombre} </label>
 			</div>
 		</c:forEach>
+		
+		
 
 		<input type="submit" value="Enviar">
 	</form>

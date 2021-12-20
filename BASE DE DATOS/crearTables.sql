@@ -49,7 +49,7 @@ COMMIT;
 /*==============================================================*/
 create table COMANDA
 (
-   ID_COMANDA           int not null,
+   ID_COMANDA           int not null AUTO_INCREMENT,
    ID_CLIENTE           int not null,
    ID_SUCURSAL          int not null,
    FECHA                datetime not null,

@@ -177,4 +177,17 @@ public class DAO {
 		con.close();
 		return platos;
 	}
+
+	public void registrarComanda(int idCliente, int idSucursal, String fecha) throws ClassNotFoundException, SQLException {
+		Statement stmt= null;
+		String query = "insert into comanda (ID_CLIENTE, id_sucursal, fecha)"
+				+ "values("+idCliente+","+idSucursal+",'"+fecha+"');";
+		try{
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/"+db,this.usuario,this.clave);
+			stmt = con.createStatement();
+			stmt.executeUpdate(query);
+			con.close();
+		}catch(SQLException sqlex){throw sqlex;}
+	}
 }

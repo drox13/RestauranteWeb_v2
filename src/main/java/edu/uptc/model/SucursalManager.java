@@ -67,4 +67,14 @@ public class SucursalManager {
 		}
 		return null;
 	}
+
+	public void registrarComanda(String cc, String idSucursal) {
+		LocalDate date = LocalDate.now();
+		try {
+			dao.registrarComanda(Integer.parseInt(cc), Integer.parseInt(idSucursal), date.toString());
+		} catch (NumberFormatException | ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
