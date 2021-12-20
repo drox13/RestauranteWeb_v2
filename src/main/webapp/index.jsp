@@ -97,11 +97,10 @@
      
       <header>
         <nav>
-            <a href="#">Inicio</a>
-            <a href="#">Acerca de</a>
-            <a href="#">Portafolio</a>
-            <a href="#">Servicios</a>
-            <a href="#">Contacto</a>
+            <a href="index.jsp">Inicio</a>
+            <a href="domicilio.jsp">Domicilio</a>
+            <a href="reserva.jsp">Reservas</a>
+            
         </nav>
         <section class="textos-header">
             <h1>Tu Gallina</h1>
