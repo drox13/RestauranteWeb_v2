@@ -3,32 +3,13 @@ package edu.uptc.model;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-
-import org.eclipse.jdt.internal.compiler.parser.diagnose.DiagnoseParser;
 
 import edu.uptc.dao.DAO;
 
 public class SucursalManager {
 	DAO dao = new DAO();
 	
-	ArrayList<Sucursal> listSucursales = new ArrayList<Sucursal>();
-	ArrayList<Mesa> listMesas = new ArrayList<Mesa>();
-	ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-
-	public SucursalManager() {
-		clientes.add(new Cliente(123, "Dario", "Baron", new Direccion(50, 22)));
-		
-		listMesas.add(new Mesa(1, 23));
-		listMesas.add(new Mesa(5, 23));
-		
-		/*listSucursales.add(new Sucursal(1,"Tunja", new Direccion(79, 20), new ArrayList<Reserva>(), listMesas));
-		listSucursales.add(new Sucursal(2,"Sogamoso", new Direccion(21, 12), new ArrayList<Reserva>(), listMesas));
-		listSucursales.add(new Sucursal(3,"Duitama", new Direccion(11, 11), new ArrayList<Reserva>(), listMesas));
-		listSucursales.add(new Sucursal(4,"Tunja", new Direccion(21, 50), new ArrayList<Reserva>(), listMesas));*/
-
-	}
-	
+	public SucursalManager() {}
 	
 	public ArrayList<Sucursal> getListSucursales() {
 		try {
@@ -36,7 +17,7 @@ public class SucursalManager {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		return listSucursales;
+		return null;
 	}
 	
 	public String reservar(int id_cliente, int idSucursal, String fecha, String hora, EformaPago fomaPago, int nPersonas) {
@@ -73,6 +54,15 @@ public class SucursalManager {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public ArrayList<Plato> getListPlatos() {
+		try {
+			return dao.verPlatos();
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

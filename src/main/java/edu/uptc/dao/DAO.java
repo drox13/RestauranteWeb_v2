@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import edu.uptc.model.Cliente;
 import edu.uptc.model.Direccion;
 import edu.uptc.model.EformaPago;
+import edu.uptc.model.Plato;
 import edu.uptc.model.Sucursal;
 
 public class DAO {
@@ -43,11 +43,6 @@ public class DAO {
 
 	public Cliente buscarCliente(int id_cliente) throws ClassNotFoundException, SQLException {
 		Statement stmt= null;
-		/*select * from CLIENTE c, DIRECCION d 
-		WHERE 
-	    c.id_direccion = d.id_direccion And
-	    id_cliente= 123;*/
-
 		String query = "select * from CLIENTE c, DIRECCION d where c.id_direccion = d.id_direccion And id_cliente="+id_cliente+";";
 
 		Cliente cliente = null;	
@@ -60,7 +55,6 @@ public class DAO {
 				cliente = new Cliente(rs.getInt("id_cliente"), rs.getString("nombre"), rs.getString("apellido"), new Direccion(rs.getInt("calle"), rs.getInt("carrera")));
 			}
 			con.close();
-			System.out.println("");
 		}catch(SQLException sqlex){throw sqlex;}
 		return cliente;
 	}
@@ -71,7 +65,6 @@ public class DAO {
 		Statement stmt= null;
 		String query = "select * from SUCURSAL s, DIRECCION d where s.id_direccion = d.id_direccion;";
 
-		//String query = "select * from empleado;";
 		Class.forName("com.mysql.cj.jdbc.Driver");  
 		Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/empleado",this.usuario,this.clave);
 		stmt = con.createStatement();
@@ -85,7 +78,6 @@ public class DAO {
 
 	private String verMesasLibres(int nPersonas, String hora ) throws ClassNotFoundException, SQLException {
 		Statement stmt = null;
-		//muestra todas las mesas disponibles
 		String query = "SELECT * FROM Mesa m WHERE NOT EXISTS (SELECT NULL FROM MESA_REGISTRO r WHERE r.id_mesa = m.id_mesa and r.hora ='"+ hora +"');";
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/empleado",this.usuario,this.clave);
@@ -121,7 +113,6 @@ public class DAO {
 	}
 	private void asignarMesa(int idMesa, String hora) throws ClassNotFoundException, SQLException {
 		Statement stmt = null;
-		//muestra todas las mesas disponibles
 		int ultRegistro = optenerIdReserva();
 		String query = "INSERT INTO mesa_registro(ID_MESA, ID_RESERVA, HORA) VALUES ( "+idMesa+", "+ ultRegistro + ",  '"+ hora +"');";
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -153,11 +144,8 @@ public class DAO {
 	public boolean validaSoloUnaReserva(int idCliente, String fecha) throws ClassNotFoundException, SQLException {
 		Statement stmt= null;
 
-		/*String query = "select ID_CLIENTE, FECHA from reserva"
-				+ "	where ID_cliente = "+ idCliente + "AND FECHA =\""+ fecha +"\";";*/
 		String query = "select ID_CLIENTE, FECHA from reserva"
 				+ "	where ID_cliente = "+ idCliente + ";";
-		String obFecha = null;
 		try{
 			Class.forName("com.mysql.cj.jdbc.Driver");  
 			Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/"+db,this.usuario,this.clave);
@@ -172,5 +160,21 @@ public class DAO {
 			con.close();
 			return false;
 		}catch(SQLException sqlex){throw sqlex;}
+	}
+	
+	public ArrayList<Plato> verPlatos() throws ClassNotFoundException, SQLException{
+		ArrayList<Plato> platos = new ArrayList<Plato>();
+		Statement stmt= null;
+		String query = "select * from plato;";
+
+		Class.forName("com.mysql.cj.jdbc.Driver");  
+		Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/empleado",this.usuario,this.clave);
+		stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()) {
+			platos.add(new Plato(rs.getInt("ID_PLATO"), rs.getString("NOMBRE"), rs.getString("RECETA"), rs.getInt("VALOR_UNIDA")));
+		}
+		con.close();
+		return platos;
 	}
 }

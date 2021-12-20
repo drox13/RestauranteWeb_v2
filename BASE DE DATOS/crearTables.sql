@@ -239,6 +239,7 @@ INSERT INTO CLIENTE( ID_CLIENTE, ID_DIRECCION, NOMBRE, APELLIDO) VALUES( 974, 44
 /*==============================================================*/
 /* insertando datos Table: MESA                                 */
 /*==============================================================*/
+INSERT INTO MESA(ID_MESA, __PUESTOS, ID_SUCURSAL) VALUES(10, 4, 10);
 INSERT INTO MESA(ID_MESA, __PUESTOS, ID_SUCURSAL) VALUES(11, 4, 10);
 INSERT INTO MESA(ID_MESA, __PUESTOS, ID_SUCURSAL) VALUES(12, 4, 10);
 INSERT INTO MESA(ID_MESA, __PUESTOS, ID_SUCURSAL) VALUES(13, 4, 10);

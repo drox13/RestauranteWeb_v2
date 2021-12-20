@@ -9,12 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mysql.cj.xdevapi.Client.ClientProperty;
 
 import edu.uptc.model.Cliente;
 import edu.uptc.model.EformaPago;
-import edu.uptc.model.Mesa;
-import edu.uptc.model.Reserva;
 import edu.uptc.model.SucursalManager;
 
 /**
