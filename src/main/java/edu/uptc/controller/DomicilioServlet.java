@@ -75,6 +75,9 @@ public class DomicilioServlet extends HttpServlet {
 		out.println("<p> Su domicilio pronto estara lista infomacion </p>");
 		out.println("<p> Tiempo promedio de entrega: " +  tEntrega +" Minutos</p>");
 		out.println("<p> Tiempo promedio de preparacion: " +  tPreparacion +" Minutos</p>");
+		out.println("<p> Tiempo Total de espara: " +  (tPreparacion + tEntrega) +" Minutos</p>");
+
 		out.println("</body></html>");
+		
 	}
 }
