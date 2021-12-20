@@ -1,39 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <%@ page import="java.util.ArrayList,edu.uptc.model.SucursalManager"%>
 <%@ page import="edu.uptc.model.Plato"%>
-
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-
-<!-- Bootstrap CSS -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
-<title>Menu</title>
+<title>Domicilios</title>
 </head>
 <body>
+	<c:set var="mSucrsal" value="${SucursalManager()}" />
+	<c:set var="listPlatos" value="${mSucrsal.getListPlatos()}" />
 
-	<c:set var="sManager" value="${SucursalManager()}" />
-	<c:set var="listPlatos" value="${sManager.getListPlatos()}" />
-	
-	<h1> MENU</h1>
-	<ul class="list-group">
-	<c:forEach items="${listPlatos}" var="i">
-		<li class="list-group-item">${i.toString()}</li>
-	</c:forEach>
+	<form class="row g-3" action="DomicilioServlet" method="post">
 
-	</ul>
+		<label> Numero de cedula</label> <input type="number" name="cc">
 
-	<button><a href="reserva.jsp"> Reservar </a></button>
-	<button><a href="reserva.jsp"> Domicilios </a></button>
+		<select id="select" name="FPago" class="form-select"
+			aria-label="Default select example">
+			<option selected>Seleccione la Forma de Pago Sucursal</option>
+			<option value="Tarjeta credito">Tarjeta Credito</option>
+			<option value="Tarjeta Debito">Tarjeta Debito</option>
+			<option value="Efectivo">Efectivo</option>
+		</select>
+
+		<c:forEach items="${listPlatos}" var="i">
+
+			<div class="form-check">
+				<input name="${i.idPlato} class="form-check-input" type="checkbox" value="${i.idPlato}"
+					id="flexCheckDefault"> <label class="form-check-label"
+					for="flexCheckDefault"> ${i.nombre} </label>
+			</div>
+		</c:forEach>
+
+		<input type="submit" value="Enviar">
+	</form>
 
 </body>
 </html>

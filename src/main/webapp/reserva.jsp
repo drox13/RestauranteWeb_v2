@@ -30,7 +30,7 @@
 	<c:set var="listSucursales" value="${sManager.getListSucursales()}"/>
 
 	<form class="row g-3" action="ReservaServlet" method="post">
-	
+		<label> Numero de cedula</label>
 		<input type="number" name="cc">
 
 		<select id="select" name="ciudad" class="form-select"  aria-label="Default select example">

@@ -15,7 +15,7 @@ public class Plato {
 		this.valor = valor;
 	}
 
-	public int getPlato() {
+	public int getidPlato() {
 		return idPlato;
 	}
 
