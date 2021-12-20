@@ -44,8 +44,8 @@
 			</c:forEach>
 		</select>
 		
-		<input type="date" id="start" name="fecha"  value="2021-12-20"
-       		min="2021-12-20" max="2022-12-31">
+		<input type="date" id="start" name="fecha"  value="2021-12-18"
+       		min="2021-12-18" max="2022-12-31">
        	
        	<select name="hora" class="form-select"  aria-label="Default select example">
        		<option selected>Seleccione la Hora de reserva</option>

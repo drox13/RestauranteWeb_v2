@@ -20,7 +20,8 @@ public class DAO {
 	private String  db       = "empleado";
 	private int puerto          = 3306;
 
-	public void reservar(int id_cliente, int idSucursal, String fecha, String hora, EformaPago eformaPago, int nPersonas) throws ClassNotFoundException, SQLException {
+	public String reservar(int id_cliente, int idSucursal, String fecha, String hora, EformaPago eformaPago, int nPersonas) throws ClassNotFoundException, SQLException {
+		String rta = null;
 		if(!validaSoloUnaReserva(id_cliente, fecha) && verificarMesasAlcancen(nPersonas, hora)) {
 			Statement stmt= null;
 			String query = "insert into reserva (id_cliente, id_sucursal, fecha, HORA, FORMA_PAGO)"
@@ -31,12 +32,13 @@ public class DAO {
 				stmt = con.createStatement();
 				stmt.executeUpdate(query);
 				con.close();
-				verMesasLibres(nPersonas, hora);
-				System.out.println("");
+				String mesaAsignadas = verMesasLibres(nPersonas, hora);
+				rta = "Reserva Exitosa info: cliente: " + id_cliente + " Sucursal: " + idSucursal + " Fecha: " + fecha +" hora:" + hora + "mesas Asignadas :" + mesaAsignadas ; 
 			}catch(SQLException sqlex){throw sqlex;}
 		}else {
-			System.out.println("el cliente ya tiene una reserva lara esa fecha " + id_cliente + " : " + fecha);
+			rta = "el cliente ya tiene una reserva para esa fecha :" + fecha + "(solo una por dia)";
 		}
+		return rta;
 	}
 
 	public Cliente buscarCliente(int id_cliente) throws ClassNotFoundException, SQLException {
@@ -81,7 +83,7 @@ public class DAO {
 		return sucursalList;
 	}
 
-	private void verMesasLibres(int nPersonas, String hora ) throws ClassNotFoundException, SQLException {
+	private String verMesasLibres(int nPersonas, String hora ) throws ClassNotFoundException, SQLException {
 		Statement stmt = null;
 		//muestra todas las mesas disponibles
 		String query = "SELECT * FROM Mesa m WHERE NOT EXISTS (SELECT NULL FROM MESA_REGISTRO r WHERE r.id_mesa = m.id_mesa and r.hora ='"+ hora +"');";
@@ -90,11 +92,14 @@ public class DAO {
 		stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(query);
 		
+		String mesasAsignadas = " ";
 		while (rs.next() && nPersonas > 0) {
 				asignarMesa(rs.getInt("id_mesa"), hora);
+				mesasAsignadas += rs.getInt("id_mesa") + ", ";
 				nPersonas = nPersonas - 4;
 		}
 		con.close();
+		return mesasAsignadas;
 	}
 	private boolean verificarMesasAlcancen(int nPersonas, String hora ) throws ClassNotFoundException, SQLException {
 		Statement stmt = null;

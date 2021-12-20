@@ -64,13 +64,12 @@ public class ReservaServlet extends HttpServlet {
 		
 		if(cliente != null) {
 			//id_cliente, idSucursal, id_Mesa, String fecha, String hora, EformaPago eformaPago
-			maSucursal.reservar(cliente.getCc(), Integer.parseInt(idSucursal), fecha, hora, EformaPago.EFECTIVO, Integer.parseInt(nPersonas) );
+			String rta = maSucursal.reservar(cliente.getCc(), Integer.parseInt(idSucursal), fecha, hora, EformaPago.EFECTIVO, Integer.parseInt(nPersonas) );
 			out.println("<h1> Informacion de Reserva </h1>");
-			out.println("<h2> Reserva Exitosa </h2>");
-			out.println("<h3>"+ cc + idSucursal + fecha + hora + nPersonas +"</h3>");
+			out.println("<h2>" + rta +"</h2>");
+			//out.println("<h3>"+ cc + idSucursal + fecha + hora + nPersonas +"</h3>");
 		}else {
 			
-			//out.println("<head><style>\"/css/empStyle.css\"></style> <title>Respuesta adicionar empleado</title></head>");
 			out.println("<h1> Informacion de Reserva </h1>");
 			out.println("<h2> El cliente no se encuntra registrado </h2>");
 			//out.println("<a href=\"index.jsp\"> Volver a la página inicial!</h2>");

@@ -1,7 +1,11 @@
 package edu.uptc.model;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
+
+import org.eclipse.jdt.internal.compiler.parser.diagnose.DiagnoseParser;
 
 import edu.uptc.dao.DAO;
 
@@ -35,14 +39,31 @@ public class SucursalManager {
 		return listSucursales;
 	}
 	
-	public void reservar(int id_cliente, int idSucursal, String fecha, String hora, EformaPago fomaPago, int nPersonas) {
+	public String reservar(int id_cliente, int idSucursal, String fecha, String hora, EformaPago fomaPago, int nPersonas) {
+		String rta = null;
 		try {
-			dao.reservar(id_cliente, idSucursal, fecha, hora, fomaPago, nPersonas);
+			boolean diaDiferente = isDiaDiferenteActual(fecha);
+			if(diaDiferente) {
+				rta = dao.reservar(id_cliente, idSucursal, fecha, hora, fomaPago, nPersonas);				
+			}else {
+				rta = "No puede hacer reservar para el mismo dia (HOY)";
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return  rta;
+	}
+
+
+	private boolean isDiaDiferenteActual(String fecha) {
+		LocalDate fechaAct = LocalDate.now();
+		String hoy = fechaAct.getYear() + "-" + fechaAct.getMonthValue()  + "-" + fechaAct.getDayOfMonth();
+		if(hoy.equals(fecha)) {
+			return false;
+		}
+		return true;
 	}
 
 
