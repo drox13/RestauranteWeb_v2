@@ -28,10 +28,14 @@
 <body>
 	<c:set var="sManager" value="${SucursalManager()}"/>
 	<c:set var="listSucursales" value="${sManager.getListSucursales()}"/>
-
+	
+	<h1> Reservas</h1>
+	
 	<form class="row g-3" action="ReservaServlet" method="post">
-		<label> Numero de cedula</label>
-		<input type="number" name="cc">
+		<div class="mb-3" >
+			<label> Numero de cedula</label>
+			<input type="number" name="cc">
+		</div>
 
 		<select id="select" name="ciudad" class="form-select"  aria-label="Default select example">
 			<option selected>Seleccione la Sucursal</option>
@@ -60,8 +64,10 @@
      		 </c:forEach>
        	</select>
        	
-       	<label> Numero de personas</label>
-       	<input type="number" name="n_personas" min="1" step="1">
+       	<div class="mb-3">
+	       	<label> Numero de personas</label>
+	       	<input type="number" name="n_personas" min="1" step="1">
+       	</div>
        	
 		<input type="submit" value="Enviar">
 	</form>
