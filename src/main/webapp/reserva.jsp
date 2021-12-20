@@ -12,6 +12,7 @@
 
 <html lang="en">
 <head>
+<style><%@include file="/css/estilos.css"%></style>
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +27,30 @@
 <title>Reservas!</title>
 </head>
 <body>
-	<c:set var="sManager" value="${SucursalManager()}"/>
+
+	<header>
+        <nav>
+            <a href="index.jsp">Inicio</a>
+            <a href="domicilio.jsp">Domicilio</a>
+            <a href="reserva.jsp">Reservas</a>
+            
+        </nav>
+        <section class="textos-header">
+            <h1>Tu Gallina</h1>
+            <h2>Los Mejores Platos Tipicos</h2>
+        </section>
+        <div class="wave" style="height: 150px; overflow: hidden;"><svg viewBox="0 0 500 150" preserveAspectRatio="none"
+                style="height: 100%; width: 100%;">
+                <path d="M0.00,49.98 C150.00,150.00 349.20,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
+                    style="stroke: none; fill: #fff;"></path>
+            </svg></div>
+    </header>
+    <main>
+    <c:set var="sManager" value="${SucursalManager()}" />
+	<c:set var="listPlatos" value="${sManager.getListPlatos()}" />
+        <section class="contenedor sobre-nosotros">
+            
+            <c:set var="sManager" value="${SucursalManager()}"/>
 	<c:set var="listSucursales" value="${sManager.getListSucursales()}"/>
 	
 	<h1> Reservas</h1>
@@ -71,6 +95,47 @@
        	
 		<input type="submit" value="Enviar">
 	</form>
+        </section>
+      
+        <section class="clientes contenedor">
+            <h2 class="titulo">Nuestros Servicios</h2>
+            <div class="cards">
+                <div class="card">
+                
+			
+                    <img src="https://previews.123rf.com/images/vectorchef/vectorchef1507/vectorchef150709126/42872760-icono-del-men%C3%BA.jpg" alt="">
+	                <button class="btn btn-primary">
+						<a style="color: white" href="reserva.jsp"> Ver Menu </a>
+					</button>
+                    
+                </div>
+                <div class="card">
+                	<img src="https://i.pinimg.com/474x/0a/ee/c0/0aeec09d1473ab5a3f78a0a90ce6c749.jpg" alt="">
+	                <button class="btn btn-primary">
+						<a style="color: white" href="domicilio.jsp"> Domicilios </a>
+					</button>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    <footer>
+        <div class="contenedor-footer">
+            <div class="content-foo">
+                <h4>Phone</h4>
+                <p>8296312</p>
+            </div>
+            <div class="content-foo">
+                <h4>Email</h4>
+                <p>TuGallina@gmail.com</p>
+            </div>
+            <div class="content-foo">
+                <h4>Location</h4>
+                <p>8296312</p>
+            </div>
+        </div>
+        <h2 class="titulo-final">&copy; Dario Baron | Christian Sanabria | Diego Cepeda</h2>
+    </footer>
 	
 	
 	<!-- Optional JavaScript; choose one of the two! -->
