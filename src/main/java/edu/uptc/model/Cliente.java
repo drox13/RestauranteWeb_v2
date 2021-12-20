@@ -21,4 +21,8 @@ public class Cliente {
 	public int getCc() {
 		return cc;
 	}
+	
+	public Direccion getDirecion() {
+		return direcion;
+	}
 }

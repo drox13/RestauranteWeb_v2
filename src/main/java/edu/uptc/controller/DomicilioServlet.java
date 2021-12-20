@@ -1,6 +1,7 @@
 package edu.uptc.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mysql.cj.xdevapi.Client;
+
+import edu.uptc.model.Cliente;
 import edu.uptc.model.Plato;
 import edu.uptc.model.SucursalManager;
 
@@ -43,9 +47,9 @@ public class DomicilioServlet extends HttpServlet {
 		//doGet(request, response);
 		ArrayList<Plato> list = maSucursal.getListPlatos();
 		ArrayList<String> comanda = new ArrayList<>();
-		String cc = String.valueOf(request.getParameter("cc"));
+		int cc = Integer.parseInt( request.getParameter("cc"));
 		String fPago = request.getParameter("FPago");
-		String idSucursal = String.valueOf(request.getParameter("ciudad"));
+		int idSucursal = Integer.parseInt(request.getParameter("ciudad"));
 		int tPreparacion = 0;
 		for (Plato plato : list) {
 			//	idPlato -	cantidad 
@@ -57,8 +61,20 @@ public class DomicilioServlet extends HttpServlet {
 				System.out.println( cc + " - "+ fPago+ " - "+ plato.getidPlato() + " - "+ request.getParameter(String.valueOf(plato.getidPlato())));
 			}
 		}
-		System.out.println(tPreparacion);
-
 		maSucursal.registrarComanda(cc, idSucursal);
+		
+		int tEntrega= maSucursal.tEntrega(idSucursal, cc);
+		
+		PrintWriter out;
+	    out = response.getWriter();
+        response.setContentType("text/html");
+		out.println("<html>");
+		out.println("<body>");
+		
+		out.println("<h1> Informacion de Domicilio </h1>");
+		out.println("<p> Su domicilio pronto estara lista infomacion </p>");
+		out.println("<p> Tiempo promedio de entrega: " +  tEntrega +" Minutos</p>");
+		out.println("<p> Tiempo promedio de preparacion: " +  tPreparacion +" Minutos</p>");
+		out.println("</body></html>");
 	}
 }

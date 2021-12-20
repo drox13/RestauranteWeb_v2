@@ -68,13 +68,26 @@ public class SucursalManager {
 		return null;
 	}
 
-	public void registrarComanda(String cc, String idSucursal) {
+	public void registrarComanda(int cc, int idSucursal) {
 		LocalDate date = LocalDate.now();
 		try {
-			dao.registrarComanda(Integer.parseInt(cc), Integer.parseInt(idSucursal), date.toString());
+			dao.registrarComanda(cc, idSucursal, date.toString());
 		} catch (NumberFormatException | ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public int tEntrega(int idSucursal, int cc) {
+		try {
+			Direccion dirCli = dao.buscarCliente(cc).getDirecion();
+			Direccion dirSu = dao.buscarDireccionSucursal(idSucursal);
+			int resCalle = Math.abs(dirSu.getCalle() - dirCli.getCalle());
+			int resCarreara = Math.abs(dirSu.getCarrera() - dirCli.getCarrera());
+			return  (resCalle + resCarreara) * 5;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

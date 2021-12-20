@@ -9,6 +9,16 @@ public class Direccion {
 		this.carrera = carrera;
 	}
 	
+	
+	public int getCalle() {
+		return calle;
+	}
+
+	public int getCarrera() {
+		return carrera;
+	}
+
+
 	@Override
 	public String toString() {
 		return "calle: " + calle  + " carrera: " + carrera;

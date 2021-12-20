@@ -190,4 +190,20 @@ public class DAO {
 			con.close();
 		}catch(SQLException sqlex){throw sqlex;}
 	}
+	
+	public Direccion  buscarDireccionSucursal(int idSucursal) throws ClassNotFoundException, SQLException {
+		Direccion direccion = null;
+		Statement stmt= null;
+		String query = "select calle, carrera from Sucursal s, Direccion d where s.id_direccion = d.id_direccion and s.id_sucursal = '"+idSucursal+"';"; 
+
+		Class.forName("com.mysql.cj.jdbc.Driver");  
+		Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/empleado",this.usuario,this.clave);
+		stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()) {
+			direccion = new Direccion(rs.getInt("calle"), rs.getInt("carrera"));
+		}
+		con.close();
+		return direccion;
+	}
 }
