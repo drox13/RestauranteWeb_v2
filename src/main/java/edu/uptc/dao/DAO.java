@@ -21,18 +21,22 @@ public class DAO {
 	private int puerto          = 3306;
 
 	public void reservar(int id_cliente, int idSucursal, String fecha, String hora, EformaPago eformaPago, int nPersonas) throws ClassNotFoundException, SQLException {
-		Statement stmt= null;
-		String query = "insert into reserva (id_cliente, id_sucursal, fecha, HORA, FORMA_PAGO)"
-				+ "values('"+id_cliente+"','"+idSucursal+"','"+fecha+"','"+hora + "','"+ eformaPago.toString() +"');";
-		try{
-			Class.forName("com.mysql.cj.jdbc.Driver");  
-			Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/"+db,this.usuario,this.clave);
-			stmt = con.createStatement();
-			stmt.executeUpdate(query);
-			con.close();
-			verMesasLibres(nPersonas, hora);
-			System.out.println("");
-		}catch(SQLException sqlex){throw sqlex;}
+		if(!validaSoloUnaReserva(id_cliente, fecha) && verificarMesasAlcancen(nPersonas, hora)) {
+			Statement stmt= null;
+			String query = "insert into reserva (id_cliente, id_sucursal, fecha, HORA, FORMA_PAGO)"
+					+ "values('"+id_cliente+"','"+idSucursal+"','"+fecha+"','"+hora + "','"+ eformaPago.toString() +"');";
+			try{
+				Class.forName("com.mysql.cj.jdbc.Driver");  
+				Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/"+db,this.usuario,this.clave);
+				stmt = con.createStatement();
+				stmt.executeUpdate(query);
+				con.close();
+				verMesasLibres(nPersonas, hora);
+				System.out.println("");
+			}catch(SQLException sqlex){throw sqlex;}
+		}else {
+			System.out.println("el cliente ya tiene una reserva lara esa fecha " + id_cliente + " : " + fecha);
+		}
 	}
 
 	public Cliente buscarCliente(int id_cliente) throws ClassNotFoundException, SQLException {
@@ -80,8 +84,20 @@ public class DAO {
 	private void verMesasLibres(int nPersonas, String hora ) throws ClassNotFoundException, SQLException {
 		Statement stmt = null;
 		//muestra todas las mesas disponibles
-		//String query = "SELECT * FROM Mesa m WHERE NOT EXISTS (SELECT NULL FROM MESA_REGISTRO r	WHERE r.id_mesa = m.id_mesa);";
-		//String query = "SELECT * FROM Mesa m WHERE NOT EXISTS (SELECT NULL FROM MESA_REGISTRO r WHERE r.id_mesa = m.id_mesa and r.hora ='3:00 PM');";
+		String query = "SELECT * FROM Mesa m WHERE NOT EXISTS (SELECT NULL FROM MESA_REGISTRO r WHERE r.id_mesa = m.id_mesa and r.hora ='"+ hora +"');";
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/empleado",this.usuario,this.clave);
+		stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		
+		while (rs.next() && nPersonas > 0) {
+				asignarMesa(rs.getInt("id_mesa"), hora);
+				nPersonas = nPersonas - 4;
+		}
+		con.close();
+	}
+	private boolean verificarMesasAlcancen(int nPersonas, String hora ) throws ClassNotFoundException, SQLException {
+		Statement stmt = null;
 		String query = "SELECT * FROM Mesa m WHERE NOT EXISTS (SELECT NULL FROM MESA_REGISTRO r WHERE r.id_mesa = m.id_mesa and r.hora ='"+ hora +"');";
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/empleado",this.usuario,this.clave);
@@ -90,13 +106,14 @@ public class DAO {
 		System.out.println("sada");
 		
 		while (rs.next() && nPersonas > 0) {
-			System.out.println(nPersonas);
-				asignarMesa(rs.getInt("id_mesa"), hora);
 				nPersonas = nPersonas - 4;
 		}
+		if(nPersonas <= 0) {
+			return true;
+		}
 		con.close();
+		return false;
 	}
-	
 	private void asignarMesa(int idMesa, String hora) throws ClassNotFoundException, SQLException {
 		Statement stmt = null;
 		//muestra todas las mesas disponibles
@@ -126,5 +143,29 @@ public class DAO {
 		}
 		con.close();
 		return idReserva;
+	}
+	
+	public boolean validaSoloUnaReserva(int idCliente, String fecha) throws ClassNotFoundException, SQLException {
+		Statement stmt= null;
+
+		/*String query = "select ID_CLIENTE, FECHA from reserva"
+				+ "	where ID_cliente = "+ idCliente + "AND FECHA =\""+ fecha +"\";";*/
+		String query = "select ID_CLIENTE, FECHA from reserva"
+				+ "	where ID_cliente = "+ idCliente + ";";
+		String obFecha = null;
+		try{
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection con = DriverManager.getConnection("jdbc:mysql://"+this.maquina+":"+this.puerto+"/"+db,this.usuario,this.clave);
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				if(rs.getString("Fecha").equals(fecha)) {
+					return true;					
+				}
+			}
+			con.close();
+			return false;
+		}catch(SQLException sqlex){throw sqlex;}
 	}
 }
