@@ -60,6 +60,7 @@
      		 </c:forEach>
        	</select>
        	
+       	<label> Numero de personas</label>
        	<input type="number" name="n_personas" min="1" step="1">
        	
 		<input type="submit" value="Enviar">
